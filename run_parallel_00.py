@@ -25,10 +25,8 @@ PC=waq_scenario.ParameterConstant
 
 
 def load_hydro():
-    # Load a full scenario to get the full list of tracers:
-    hydro=waq_scenario.HydroFiles("../../delft/sfb_dfm_v2/runs/wy2013a/DFM_DELWAQ_wy2013a/wy2013a.hyd")
-    hydro.enable_write_symlink=True
-    return hydro
+    # Needed to create a full scenario to in turn get the full list of tracers
+    return sfbay_cons_tracer_00.hydro
 
 
 def find_missing_tracers():
@@ -65,7 +63,6 @@ def worker(tracers):
     """
     Takes a list of tracers, creates and runs dwaq for those sources.
     """
-    # DBG return "Process %d: %s"%(os.getpid(),str(tracers))
     base_path=None
     try:
         # Unsafe to share hydro across multiple scenarios

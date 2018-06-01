@@ -26,16 +26,13 @@ from stompy.spatial import (wkb2shp,proj_utils)
 from stompy.grid import unstructured_grid
 
 ## 
-from importlib import reload
-reload(waq_scenario) # DEV
 
-hydro=waq_scenario.HydroFiles("../../delft/sfb_dfm_v2/runs/wy2013a/DFM_DELWAQ_wy2013a/wy2013a.hyd")
+# The 2017-10-16 runs used this older hydrodynamic data.
+# hydro=waq_scenario.HydroFiles("../../delft/sfb_dfm_v2/runs/wy2013a/DFM_DELWAQ_wy2013a/wy2013a.hyd")
+# This is the hydro described in the Intermim Model Validation Report,  with the adjusted
+# fluxes for issues with that version of DFM.
+hydro=waq_scenario.HydroFiles("../../delft/sfb_dfm_v2/runs/wy2013c/DFM_DELWAQ_wy2013c_adj/wy2013c.hyd")
 hydro.enable_write_symlink=True
-
-##
-
-# Did that load properly?  grid is okay.
-# g=hydro_mod.grid()
 
 ## 
 
@@ -47,7 +44,7 @@ IC=waq_scenario.Initial
 class Scen(waq_scenario.Scenario):
     name="sfb_dfm_v2"
     desc=('sfb_dfm_v2',
-          'wy2013',
+          'wy2013c',
           'conserv_tracer')
     # removed BALANCES-SOBEK-STYLE
     # IMPORTANT to have the NODISP-AT-BOUND in there.
@@ -57,7 +54,7 @@ class Scen(waq_scenario.Scenario):
     BAL_NOLUMPPROCESSES BAL_NOLUMPLOADS BAL_NOLUMPTRANSPORT
     BAL_NOSUPPRESSSPACE BAL_NOSUPPRESSTIME
     """
-    base_path='runs/wy2013a-20171016'
+    base_path='runs/wy2013c-20180404'
 
     #maybe this will be more stable with shorter time step?
     # with 30 minutes, failed with non-convergence at 0.09% or so.
@@ -236,10 +233,6 @@ if __name__=='__main__':
     scen.map_time_step=240000 # map output daily
     # debugging - hourly output
     # scen.map_time_step=10000 # map output hourly
-
-    ## 
-
-
 
     if 1:
         scen.cmd_default()
